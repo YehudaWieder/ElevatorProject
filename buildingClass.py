@@ -3,7 +3,7 @@ from floorClass import *
 
 class Building(pygame.sprite.Sprite):
 
-    buildings = pygame.sprite.Group()
+    buildings = []
 
     def __init__(self, floors_num, elevators_num):
         super().__init__()
@@ -11,7 +11,7 @@ class Building(pygame.sprite.Sprite):
         self.floors_num = floors_num
         self.elevators_num = elevators_num
 
-        Building.buildings.add(self)
+        Building.buildings.append(self)
         self.draw()
 
 

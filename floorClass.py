@@ -9,8 +9,6 @@ class Floor(pygame.sprite.Sprite):
     def __init__(self, pos : (int, int), size : (int, int)):
         super().__init__()
 
-        self.floor_num = len(Floor.floors)
-        self.pos = pos
         self.image = pygame.image.load(FLOOR_IMG_PATH)
         self.image = pygame.transform.scale(self.image, size)
         self.pos = pos

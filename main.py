@@ -3,6 +3,7 @@ from elevatorClass import Elevator
 from buildingClass import Building
 from floorClass import Floor
 from buildingClass import Button
+import management
 from globals import *
 
 
@@ -42,14 +43,10 @@ while run:
         if event.type == pygame.QUIT:
             run = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            Button.onclick(event.pos)
-            # for elv in Elevator.elevators:
-            #     elv.get_task(event.pos)
+            management.is_button_clicked(event.pos)
 
     current_time = pygame.time.get_ticks()
 
-
-    # Floor.floors.draw(screen)
     for floor in Floor.floors:
         floor.draw(screen, floor.pos)
 
@@ -57,12 +54,9 @@ while run:
         elv.draw((elv.pos_x, elv.pos_y), screen)
         elv.update((current_time - previous_time) / 1000)
 
-
     previous_time = current_time
     pygame.display.update()
     clock.tick(60)
 
 pygame.quit()
 
-# if __name__ == '__main__':
-#     main()

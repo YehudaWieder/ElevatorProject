@@ -1,6 +1,5 @@
 import pygame.draw
 from globals import *
-from elevatorClass import Elevator
 
 
 class Button:
@@ -19,7 +18,7 @@ class Button:
 
     def on_click(self, pos: (int, int)):
         if ((pos[0] - self.pos[0])**2 + (pos[1] - self.pos[1])**2)**0.5 <= self.size:
-            Elevator.elevators[2].get_task(pos)
+            # Elevator.elevators[2].get_task(self.pos)
             return True
         return False
 
@@ -27,7 +26,7 @@ class Button:
     def onclick(cls, pos : (int, int)):
         for button in cls.buttons:
             if button.on_click(pos):
-                break
+                return True, button.pos
+        return False, None
 
-    def __del__(self):
-        pass
+
