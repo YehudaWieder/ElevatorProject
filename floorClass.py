@@ -4,7 +4,7 @@ from button import *
 
 class Floor(pygame.sprite.Sprite):
 
-    floors = pygame.sprite.Group()
+    floors = []
 
     def __init__(self, pos : (int, int), size : (int, int)):
         super().__init__()
@@ -13,11 +13,15 @@ class Floor(pygame.sprite.Sprite):
         self.pos = pos
         self.image = pygame.image.load(FLOOR_IMG_PATH)
         self.image = pygame.transform.scale(self.image, size)
-        self.rect = self.image.get_rect(midtop=pos)
-        Button((pos[0], pos[1] + (FLOOR_HEIGHT / 2)), 20, GRAY,"???", self.floor_click)
+        self.pos = pos
+        self.button = Button((pos[0] + FLOOR_WIDTH / 2, pos[1] + FLOOR_HEIGHT / 2), 20)
 
-        Floor.floors.add(self)
+        Floor.floors.append(self)
 
-    def floor_click(self):
-        pass
+    def draw(self, screen, pos):
+        screen.blit(self.image, pos)
+        pygame.draw.line(screen, BLACK, pos,(pos[0] + FLOOR_WIDTH, pos[1]), 10)
+        self.button.draw((pos[0] + FLOOR_WIDTH / 2, pos[1] + FLOOR_HEIGHT / 2), 20, screen)
+
+
 
