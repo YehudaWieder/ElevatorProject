@@ -1,0 +1,30 @@
+from collections import namedtuple
+
+#global
+# Point = namedtuple('Point', ['x', 'y'])
+# RGB = namedtuple('RGB', ['r', 'g', 'b'])
+
+
+#images paths
+ELV_ING_PATH = "elv.png"
+FLOOR_IMG_PATH = "floor.jpg"
+DING_FILE_PATH = "ding.mp3"
+
+
+#sizes
+FLOOR_WIDTH, FLOOR_HEIGHT = 150, 80
+
+ELEVATOR_WIDTH, ELEVATOR_HEIGHT = 60, 75
+
+SCREEN_WIDTH, SCREEN_HEIGHT = 500, 650
+# ENVIRONMENT_WIDTH, ENVIRONMENT_HEIGHT = SCREEN_WIDTH, max(SCREEN_HEIGHT, BUILDING_HEIGHT)
+
+#position
+FLOOR_POS = (20 + FLOOR_WIDTH / 2, SCREEN_HEIGHT - FLOOR_HEIGHT)
+ELEVATOR_POS = (20 + FLOOR_WIDTH + ELEVATOR_WIDTH, SCREEN_HEIGHT - ELEVATOR_HEIGHT)
+
+#colors
+LIGHT_BLUE = 200,200,255
+GRAY = 200, 200, 200
+BLACK = 0, 0, 0
+
