@@ -1,8 +1,8 @@
 from elevatorClass import *
 from floorClass import *
 
-class Building(pygame.sprite.Sprite):
 
+class Building(pygame.sprite.Sprite):
     buildings = []
 
     def __init__(self, floors_num, elevators_num):
@@ -13,7 +13,6 @@ class Building(pygame.sprite.Sprite):
 
         Building.buildings.append(self)
         self.draw()
-
 
     def draw(self):
         for i in range(self.floors_num):

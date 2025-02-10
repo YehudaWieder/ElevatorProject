@@ -6,7 +6,6 @@ from button import Button
 import management
 from globals import *
 
-
 pygame.init()
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -62,4 +61,3 @@ while run:
     clock.tick(REFRESH_PER_SECOND)
 
 pygame.quit()
-
