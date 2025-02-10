@@ -1,8 +1,9 @@
+from button import Button
 from elevatorClass import Elevator
-from buildingClass import Button
+
 
 def get_closest_elv(task_pos : (int, int)):
-    min_time = 100000
+    min_time = float("inf")
     closest_elv = None
 
     for elv in Elevator.elevators:
@@ -14,7 +15,8 @@ def get_closest_elv(task_pos : (int, int)):
     return closest_elv, min_time
 
 def is_button_clicked(pos: (int, int)):
-    is_button_pressed, button_pos = Button.onclick(pos)
+    is_button_pressed, button, button_pos = Button.onclick(pos)
     if is_button_pressed:
         closest_elv, min_time = get_closest_elv(button_pos[1])
+        button.pressed_timer = min_time
         Elevator.get_new_task(closest_elv, button_pos[1])

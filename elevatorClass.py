@@ -25,6 +25,7 @@ class Elevator(pygame.sprite.Sprite):
 
     def set_suspending_in_floor(self):
         if self.suspending_for_floor == 120:
+            pygame.mixer.music.load(DING_FILE_PATH)
             pygame.mixer.music.play()
         if self.suspending_for_floor == 0:
             self.tasks.pop(0)
@@ -40,7 +41,7 @@ class Elevator(pygame.sprite.Sprite):
                 self.pos_y = min(self.pos_y + self.velocity * delta_time, self.tasks[0])
             else:
                 self.set_suspending_in_floor()
-            self.tasks_timer -= 1 / 60
+            self.tasks_timer -= 1 / REFRESH_PER_SECOND
         else:
             self.tasks_timer = 0
 
