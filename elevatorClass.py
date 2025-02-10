@@ -1,13 +1,12 @@
-from globals import *
 import pygame
-
+from globals import *
 
 
 class Elevator(pygame.sprite.Sprite):
     elevators = []
-    velocity = 160 # P/S
+    velocity = 160  # P/S
 
-    def __init__(self, current_floor : int,  pos : (int, int), size : (int, int)):
+    def __init__(self, current_floor: int, pos: (int, int), size: (int, int)):
         super().__init__()
 
         self.image = pygame.image.load(ELV_ING_PATH)
@@ -63,8 +62,3 @@ class Elevator(pygame.sprite.Sprite):
         lest_task = self.get_lest_task()
         self.tasks.append(task_pos - ELEVATOR_HEIGHT / 2)
         self.tasks_timer += self.get_current_task_time(task_pos, lest_task) + 2
-
-
-
-
-
