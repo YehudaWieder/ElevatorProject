@@ -1,18 +1,18 @@
-import pygame
+from floorClass import Floor
 from globals import *
 
 
-class Elevator(pygame.sprite.Sprite):
+class Elevator:
     elevators = []
     velocity = 160  # P/S
 
-    def __init__(self, current_floor: int, pos: (int, int), size: (int, int)):
-        super().__init__()
+    def __init__(self, pos: (int, int)):
 
+        self.size = ELEVATOR_WIDTH, ELEVATOR_HEIGHT
         self.image = pygame.image.load(ELV_ING_PATH)
-        self.image = pygame.transform.scale(self.image, size)
-        self.pos_x = pos[0]
-        self.pos_y = pos[1]
+        self.image = pygame.transform.scale(self.image, self.size)
+        self.current_floor = 0
+        self.pos = pos
         self.tasks = []
         self.tasks_timer = 0
         self.suspending_for_floor = 120
@@ -27,6 +27,7 @@ class Elevator(pygame.sprite.Sprite):
             pygame.mixer.music.load(DING_FILE_PATH)
             pygame.mixer.music.play()
         if self.suspending_for_floor == 0:
+            Floor.floors[self.tasks[0].floor_num].is_elv_on_way = False
             self.tasks.pop(0)
             self.suspending_for_floor = 120
         else:
@@ -34,11 +35,14 @@ class Elevator(pygame.sprite.Sprite):
 
     def update(self, delta_time):
         if self.tasks:
-            if self.tasks[0] < self.pos_y:
-                self.pos_y = max(self.pos_y - self.velocity * delta_time, self.tasks[0])
-            elif self.tasks[0] > self.pos_y:
-                self.pos_y = min(self.pos_y + self.velocity * delta_time, self.tasks[0])
+            task = self.tasks[0].pos[1] - (ELEVATOR_HEIGHT / 2)
+            self.current_floor = None
+            if task < self.pos[1]:
+                self.pos = self.pos[0], max(self.pos[1] - self.velocity * delta_time, task)
+            elif task > self.pos[1]:
+                self.pos = self.pos[0], min(self.pos[1] + self.velocity * delta_time, task)
             else:
+                self.current_floor = self.tasks[0].floor_num
                 self.set_suspending_in_floor()
             self.tasks_timer -= 1 / REFRESH_PER_SECOND
         else:
@@ -46,9 +50,9 @@ class Elevator(pygame.sprite.Sprite):
 
     def get_lest_task(self):
         if self.tasks:
-            lest_task = self.tasks[len(self.tasks) - 1]
+            lest_task = self.tasks[len(self.tasks) - 1].pos[1] - (ELEVATOR_HEIGHT / 2)
         else:
-            lest_task = self.pos_y
+            lest_task = self.pos[1]
         return lest_task
 
     def get_current_task_time(self, task_pos, lest_task):
@@ -58,7 +62,7 @@ class Elevator(pygame.sprite.Sprite):
             current_task_time = (task_pos - lest_task) / self.velocity
         return current_task_time
 
-    def get_new_task(self, task_pos):
+    def get_new_task(self, button):
         lest_task = self.get_lest_task()
-        self.tasks.append(task_pos - ELEVATOR_HEIGHT / 2)
-        self.tasks_timer += self.get_current_task_time(task_pos, lest_task) + 2
+        self.tasks.append(button)
+        self.tasks_timer += self.get_current_task_time(button.pos[1], lest_task) + 2

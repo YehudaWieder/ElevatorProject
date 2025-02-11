@@ -1,24 +1,27 @@
-import pygame
 from globals import *
 
 
 class Button:
     buttons = []
 
-    def __init__(self, pos: (int, int), size: int):
+    def __init__(self, pos: (int, int), floor_num):
 
+        self.floor_num = floor_num
         self.pos = pos
-        self.size = size
+        self.size = BUTTON_SIZE
         self.pressed_timer = 0
 
         Button.buttons.append(self)
 
-    def draw(self, pos: (int, int), size: int, screen):
+    def draw(self, pos: (int, int), screen):
         if self.pressed_timer == 0:
             color = GRAY
         else:
             color = RED
-        pygame.draw.circle(screen, color, pos, size)
+        pygame.draw.circle(screen, color, pos, self.size)
+        floor_num = pygame.font.SysFont("floor number", FONT_SIZE, True, False)
+        floor_num = floor_num.render(str(self.floor_num), False, LIGHT_BLUE)
+        screen.blit(floor_num, (pos[0] - (FONT_SIZE / 4.5), pos[1] - (FONT_SIZE / 4)))
 
     def update(self):
         if self.pressed_timer > 0:
@@ -35,5 +38,5 @@ class Button:
     def onclick(cls, pos: (int, int)):
         for button in cls.buttons:
             if button.on_click(pos):
-                return True, button, button.pos
-        return False, None, None
+                return True, button
+        return False, None
