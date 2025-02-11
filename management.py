@@ -13,6 +13,8 @@ def get_closest_elv(task_pos: (int, int)):
             if elv.tasks_timer + current_task_time < min_time:
                 min_time = elv.tasks_timer + current_task_time
                 closest_elv = elv
+        else:
+            closest_elv = None
     return closest_elv, min_time
 
 
