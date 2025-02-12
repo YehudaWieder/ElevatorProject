@@ -1,4 +1,4 @@
-from floorClass import Floor
+from floor import Floor
 from globals import *
 
 
@@ -14,7 +14,7 @@ class Elevator:
         self.current_floor = 0
         self.pos = pos
         self.tasks = []
-        self.tasks_timer = 0
+        self.tasks_time = 0
         self.suspending_for_floor = 120
 
         Elevator.elevators.append(self)
@@ -44,9 +44,9 @@ class Elevator:
             else:
                 self.current_floor = self.tasks[0].floor_num
                 self.set_suspending_in_floor()
-            self.tasks_timer -= 1 / REFRESH_PER_SECOND
+            self.tasks_time -= 1 / REFRESH_PER_SECOND
         else:
-            self.tasks_timer = 0
+            self.tasks_time = 0
 
     def get_lest_task(self):
         if self.tasks:
@@ -65,4 +65,4 @@ class Elevator:
     def get_new_task(self, button):
         lest_task = self.get_lest_task()
         self.tasks.append(button)
-        self.tasks_timer += self.get_current_task_time(button.pos[1], lest_task) + 2
+        self.tasks_time += self.get_current_task_time(button.pos[1], lest_task) + 2

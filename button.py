@@ -29,14 +29,9 @@ class Button:
         else:
             self.pressed_timer = 0
 
-    def on_click(self, pos: (int, int)):
-        if ((pos[0] - self.pos[0]) ** 2 + (pos[1] - self.pos[1]) ** 2) ** 0.5 <= self.size:
-            return True
-        return False
-
     @classmethod
     def onclick(cls, pos: (int, int)):
         for button in cls.buttons:
-            if button.on_click(pos):
+            if ((pos[0] - button.pos[0]) ** 2 + (pos[1] - button.pos[1]) ** 2) ** 0.5 <= button.size:
                 return True, button
         return False, None
