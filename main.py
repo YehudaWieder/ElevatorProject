@@ -1,4 +1,4 @@
-from buildingClass import Building
+from building import Building
 import management
 from globals import *
 
@@ -26,8 +26,13 @@ clock = pygame.time.Clock()
 
 previous_time = pygame.time.get_ticks()
 
+speed = 80
+x = 0
+y = 0
+
 run = True
 while run:
+    # screen.fill(GRAY)
     surface.fill(LIGHT_BLUE)
 
     events = pygame.event.get()
@@ -37,14 +42,20 @@ while run:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 management.is_button_clicked(event.pos)
+            if event.button == 4:
+                if y < ENVIRONMENT_HEIGHT and ELEVATOR_HEIGHT > SCREEN_HEIGHT:
+                    y -= speed
+            if event.button == 5:
+                if y > 0:
+                    y += speed
 
     current_time = pygame.time.get_ticks()
     delta_time = (current_time - previous_time) / 1000
 
     building.draw(surface, delta_time)
 
-    surface.scroll(SCREEN_WIDTH, ENVIRONMENT_HEIGHT)
-    screen.blit(surface, (0, 0), )
+
+    screen.blit(surface, (0, 0 ), (x, y, ENVIRONMENT_WIDTH, ENVIRONMENT_HEIGHT))
 
     previous_time = current_time
     pygame.display.update()

@@ -1,5 +1,5 @@
-from elevatorClass import Elevator
-from floorClass import Floor
+from elevator import Elevator
+from floor import Floor
 from button import Button
 
 
@@ -10,8 +10,8 @@ def get_closest_elv(task_pos: (int, int)):
     for elv in Elevator.elevators:
         lest_task = Elevator.get_lest_task(elv)
         current_task_time = Elevator.get_current_task_time(elv, task_pos, lest_task)
-        if elv.tasks_timer + current_task_time < min_time:
-            min_time = elv.tasks_timer + current_task_time
+        if elv.tasks_time + current_task_time < min_time:
+            min_time = elv.tasks_time + current_task_time
             closest_elv = elv
     return closest_elv, min_time
 

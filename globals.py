@@ -3,8 +3,8 @@ import pygame
 
 # main
 REFRESH_PER_SECOND = 60
-NUMBER_OF_FLOORS = 10
-NUMBER_OF_ELEVATORS = 3
+NUMBER_OF_FLOORS = 7
+NUMBER_OF_ELEVATORS = 5
 
 # images paths
 ELV_ING_PATH = "pic/elv.png"

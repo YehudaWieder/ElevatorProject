@@ -1,5 +1,5 @@
-from elevatorClass import *
-from floorClass import *
+from elevator import *
+from floor import *
 
 
 class Building:
@@ -26,9 +26,9 @@ class Building:
         for floor in Floor.floors:
             floor.draw(screen, floor.pos)
 
-        for elv in Elevator.elevators:
-            elv.draw(elv.pos, screen)
-            elv.update(delta_time)
+        for elevator in Elevator.elevators:
+            elevator.draw(elevator.pos, screen)
+            elevator.update(delta_time)
 
         for button in Button.buttons:
             button.update()

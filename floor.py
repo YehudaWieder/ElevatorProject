@@ -18,7 +18,7 @@ class Floor:
 
     def draw_timer(self, screen):
         if self.button.pressed_timer > 0:
-            pygame.draw.rect(screen, LIGHT_BLUE, (55, self.pos[1] + BUTTON_SIZE, 90, 40), 0, 30)
+            pygame.draw.rect(screen, LIGHT_BLUE, (self.pos[0] + 5, self.pos[1] + 20, 90, 40), 0, 30)
             floor_timer = pygame.font.SysFont("floor timer", FONT_SIZE, True, False)
             floor_timer = floor_timer.render(str(int(self.button.pressed_timer) + 1), False, BLACK)
             screen.blit(floor_timer, (self.pos[0] + FLOOR_WIDTH / 6, self.pos[1] + FLOOR_HEIGHT / 2.5))
