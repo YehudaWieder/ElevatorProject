@@ -3,32 +3,23 @@ from floor import *
 
 
 class Building:
-    buildings = []
 
-    def __init__(self, floors_num, elevators_num):
+    def __init__(self, floors_num: int, elevators_num: int):
+        self.floors = [Floor(i) for i in range(floors_num)]
+        self.elevators = [Elevator(i) for i in range(elevators_num)]
 
-        self.floors = Floor.floors
-        self.elevators = Elevator.elevators
-        self.create_building(floors_num, elevators_num)
 
-        Building.buildings.append(self)
+    def draw(self, surface, delta_time):
+        for floor in self.floors:
+            floor.draw(surface)
+            floor.update(delta_time)
 
-    def create_building(self, floors_num, elevators_num):
-        for i in range(floors_num):
-            Floor((FLOOR_POS[0], FLOOR_POS[1] - (FLOOR_HEIGHT * i)))
-            if i == 0:
-                Floor.floors[0].is_elv_here = True
-
-        for i in range(elevators_num):
-            Elevator((ELEVATOR_POS[0] + (ELEVATOR_WIDTH * i), ELEVATOR_POS[1]))
-
-    def draw(self, screen, delta_time):
-        for floor in Floor.floors:
-            floor.draw(screen, floor.pos)
-
-        for elevator in Elevator.elevators:
-            elevator.draw(elevator.pos, screen)
+        for elevator in self.elevators:
             elevator.update(delta_time)
+            elevator.draw(surface)
 
-        for button in Button.buttons:
-            button.update()
+    def is_floors_button_clicked(self, click_pos: (int, int)):
+        for floor in self.floors:
+            if floor.button.onclick(click_pos):
+                return True, floor
+        return False, None
