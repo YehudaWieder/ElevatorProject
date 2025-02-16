@@ -1,4 +1,3 @@
-from floor import Floor
 from globals import *
 
 
@@ -6,32 +5,37 @@ class Elevator:
 
     def __init__(self, elevator_num: int):
         self.elevator_num = elevator_num
-        self.image = pygame.image.load(ELV_ING_PATH)
-        self.image = pygame.transform.scale(self.image, (ELEVATOR_WIDTH, ELEVATOR_HEIGHT))
-        self.pos = BASE_ELEVATOR_POS[0] + (ELEVATOR_WIDTH * self.elevator_num), BASE_ELEVATOR_POS[1]
+        self.image = pygame.transform.scale(pygame.image.load(ELV_ING_PATH), (ELEVATOR_WIDTH, ELEVATOR_HEIGHT))
+        self.active_elevator_image = pygame.transform.scale(pygame.image.load(ACTIVE_ELV_ING_PATH),(ELEVATOR_WIDTH, ELEVATOR_HEIGHT))
+        self.pos = BASE_ELEVATOR_POS_X + (ELEVATOR_WIDTH * self.elevator_num), BASE_ELEVATOR_POS_Y
         self.current_floor = 0
         self.tasks = []
         self.tasks_time = 0
-        self.suspending_for_floor = 120
+        self.suspending_for_floor = 2
 
-
+    # draw elevator
     def draw(self, surface):
         surface.blit(self.image, self.pos)
+        if self.tasks_time > 0:
+            surface.blit(self.active_elevator_image, self.pos)
 
-    def set_suspending_in_floor(self):
-        if self.suspending_for_floor == 120:
+    # suspending elevator in floor for two seconds
+    def set_suspending_in_floor(self, delta_time: float):
+        if self.suspending_for_floor == 2:
             pygame.mixer.music.load(DING_FILE_PATH)
             pygame.mixer.music.play()
         if self.suspending_for_floor == 0:
             self.tasks[0].is_elv_on_way = False
             self.tasks.pop(0)
-            self.suspending_for_floor = 120
+            self.suspending_for_floor = 2
         else:
-            self.suspending_for_floor -= 1
+            self.suspending_for_floor = max(self.suspending_for_floor - delta_time, 0)
 
+    # update the elevator's y position
     def update(self, delta_time: float):
         if self.tasks:
-            task_y = self.tasks[0].pos[1]# - (ELEVATOR_HEIGHT / 2)
+            task_y = self.tasks[0].pos[1]
+            tasks_floor_num = self.tasks[0].floor_num
             self.current_floor = None
             elevator_x, elevator_y = self.pos
             if task_y < elevator_y:
@@ -39,12 +43,11 @@ class Elevator:
             elif task_y > elevator_y:
                 self.pos = elevator_x, min(elevator_y + ELEVATOR_VELOCITY * delta_time, task_y)
             else:
-                self.current_floor = self.tasks[0].floor_num
-                self.set_suspending_in_floor()
-            self.tasks_time -= 1 / REFRESH_PER_SECOND
-        else:
-            self.tasks_time = 0
+                self.current_floor = tasks_floor_num
+                self.set_suspending_in_floor(delta_time)
+            self.tasks_time = max(self.tasks_time - delta_time, 0)
 
+    # get the elevator's lest y position
     def get_lest_elevator_y(self):
         current_elevator_y = self.pos[1]
         if self.tasks:
@@ -53,6 +56,7 @@ class Elevator:
         else:
             return current_elevator_y
 
+    # get the time for the new task
     def get_current_task_time(self, task_pos: int, lest_task: int):
         current_task_time = 0
         if lest_task > task_pos:
@@ -61,7 +65,9 @@ class Elevator:
             current_task_time = (task_pos - lest_task) / ELEVATOR_VELOCITY
         return current_task_time
 
+    # add a new floor to the tasks array
     def get_new_task(self, floor):
+        task_y = floor.pos[1]
         lest_elevator_y = self.get_lest_elevator_y()
+        self.tasks_time += self.get_current_task_time(task_y, lest_elevator_y) + 2
         self.tasks.append(floor)
-        self.tasks_time += self.get_current_task_time(floor.pos[1], lest_elevator_y) + 2
