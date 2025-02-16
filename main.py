@@ -17,6 +17,15 @@ scroll_speed = 20
 scroll_y = ENVIRONMENT_HEIGHT - SCREEN_HEIGHT
 
 run = True
+
+#check if the number of the floors and elevators are legal
+if len(my_building.elevators) <= 0:
+    print("There isn't exist elevators in the building, you must using the stairs")
+    run = False
+elif len(my_building.floors) <= len(my_building.elevators):
+    print("To use the program the number of floors must be at least one more than the number of elevators")
+    run = False
+
 while run:
     events = pygame.event.get()
     for event in events:
