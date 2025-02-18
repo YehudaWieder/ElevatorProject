@@ -66,7 +66,6 @@ while run:
     y += scroll_y
     management.mouse_over(my_building, (x, y), surface)
 
-    clock.tick(REFRESH_PER_SECOND)
     pygame.display.flip()
 
 pygame.quit()

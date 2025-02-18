@@ -40,6 +40,8 @@ class Floor:
     # update floor timer
     def update(self, delta_time: float):
         if self.floor_timer > 0:
+            self.is_elv_on_way = True
             self.floor_timer -= delta_time
         else:
+            self.is_elv_on_way = False
             self.floor_timer = 0

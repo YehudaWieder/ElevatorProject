@@ -1,4 +1,5 @@
 import pygame.mouse
+import elevator
 from globals import *
 
 
@@ -7,27 +8,38 @@ def get_quickest_elv(building, task_pos: (int, int)):
     min_time = float("inf")
     quickest_elevator = None
 
-    for elevator in building.elevators:
-        lest_task_y = elevator.get_lest_elevator_y()
+    for elv in building.elevators:
+        if elv.pos[1] == task_pos and elv.suspending_for_floor == 2:
+            return elv, 0
+        elif elv.pos[1] == task_pos:
+            return None, None
+
+        lest_task_y = elv.get_last_elevator_y()
         current_task_time = elevator.get_current_task_time(task_pos, lest_task_y)
-        if elevator.tasks_time + current_task_time < min_time:
-            min_time = elevator.tasks_time + current_task_time
-            quickest_elevator = elevator
+        if elv.tasks_time + current_task_time < min_time:
+            min_time = elv.tasks_time + current_task_time
+            quickest_elevator = elv
     return quickest_elevator, min_time
 
 
 # checking if button clicked and chooses elevator and then inviting him
 def is_button_clicked(building, pos: (int, int)):
+    """
+    checks if a button was clicked
+    :param building: the building to be checked
+    :param pos: the mouse click position (x, y) tuple
+    :return: None
+    """
     # checking if button clicked
     is_button_pressed, floor = building.is_floors_button_clicked(pos)
     if is_button_pressed and not floor.is_elv_on_way:
         # choosing an elevator
         quickest_elevator, min_time = get_quickest_elv(building, floor.pos[1])
         # sending the task to the elevator
-        if quickest_elevator.current_floor != floor.floor_num:
+        if quickest_elevator:
             floor.floor_timer = min_time
-            floor.is_elv_on_way = True
-            quickest_elevator.get_new_task(floor)
+            task_y = floor.pos[1]
+            quickest_elevator.get_new_task(task_y)
 
 
 # draw the reset button
@@ -44,12 +56,12 @@ def reset(building, pos: (int, int)):
     x, y = pos
     bx, by = RESET_BUTTON_POS
     if ((x - bx) ** 2 + (y - by) ** 2) ** 0.5 < RESET_BUTTON_SIZE:
-        for elevator in building.elevators:
-            elevator.pos = elevator.pos[0], BASE_ELEVATOR_POS_Y
-            elevator.current_floor = 0
-            elevator.tasks = []
-            elevator.tasks_time = 0
-            elevator.suspending_for_floor = 2
+        for elv in building.elevators:
+            elv.pos = elv.pos[0], BASE_ELEVATOR_POS_Y
+            elv.current_floor = 0
+            elv.tasks = []
+            elv.tasks_time = 0
+            elv.suspending_for_floor = 2
 
         for floor in building.floors:
             floor.is_elv_on_way = False
