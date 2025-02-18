@@ -40,6 +40,6 @@ class Floor:
     # update floor timer
     def update(self, delta_time: float):
         if self.floor_timer > 0:
-            self.floor_timer -= 1 * delta_time
+            self.floor_timer -= delta_time
         else:
             self.floor_timer = 0
