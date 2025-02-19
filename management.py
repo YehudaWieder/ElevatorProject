@@ -14,8 +14,8 @@ def get_quickest_elv(building, task_pos: (int, int)):
         elif elv.pos[1] == task_pos:
             return None, None
 
-        lest_task_y = elv.get_last_elevator_y()
-        current_task_time = elevator.get_current_task_time(task_pos, lest_task_y)
+        last_task_y = elv.get_last_elevator_y()
+        current_task_time = elevator.get_current_task_time(task_pos, last_task_y)
         if elv.tasks_time + current_task_time < min_time:
             min_time = elv.tasks_time + current_task_time
             quickest_elevator = elv
@@ -39,7 +39,7 @@ def is_button_clicked(building, pos: (int, int)):
         if quickest_elevator:
             floor.floor_timer = min_time
             task_y = floor.pos[1]
-            quickest_elevator.get_new_task(task_y)
+            quickest_elevator.add_new_task(task_y)
 
 
 # draw the reset button

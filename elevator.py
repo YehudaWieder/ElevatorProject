@@ -2,12 +2,12 @@ from globals import *
 
 
 # get the time for the new task
-def get_current_task_time(task_pos: int, lest_task: int):
+def get_current_task_time(task_pos: int, last_task: int):
     current_task_time = 0
-    if lest_task > task_pos:
-        current_task_time = (lest_task - task_pos) / ELEVATOR_VELOCITY
-    elif lest_task < task_pos:
-        current_task_time = (task_pos - lest_task) / ELEVATOR_VELOCITY
+    if last_task > task_pos:
+        current_task_time = (last_task - task_pos) / ELEVATOR_VELOCITY
+    elif last_task < task_pos:
+        current_task_time = (task_pos - last_task) / ELEVATOR_VELOCITY
     return current_task_time
 
 
@@ -53,18 +53,18 @@ class Elevator:
                 self.set_suspending_in_floor(delta_time)
             self.tasks_time = max(self.tasks_time - delta_time, 0)
 
-    # get the elevator's lest y position
+    # get the elevator's last y position
     def get_last_elevator_y(self):
         current_elevator_y = self.pos[1]
         if self.tasks:
-            lest_task_y = self.tasks[len(self.tasks) - 1]
-            return lest_task_y
+            last_task_y = self.tasks[len(self.tasks) - 1]
+            return last_task_y
         else:
             return current_elevator_y
 
 
     # add a new floor to the tasks array
-    def get_new_task(self, task_y):
-        lest_elevator_y = self.get_last_elevator_y()
-        self.tasks_time += get_current_task_time(task_y, lest_elevator_y) + 2
+    def add_new_task(self, task_y):
+        last_elevator_y = self.get_last_elevator_y()
+        self.tasks_time += get_current_task_time(task_y, last_elevator_y) + 2
         self.tasks.append(task_y)
