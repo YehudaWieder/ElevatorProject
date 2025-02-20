@@ -1,8 +1,13 @@
 from globals import *
 
 
-# get the time for the new task
-def get_current_task_time(task_pos: int, last_task: int):
+def get_current_task_time(task_pos: int, last_task: int) -> float:
+    """
+    calculates the time for the new task
+    :param task_pos: the y point to send an elevator there, int
+    :param last_task: the last y point that the elevator needs be there, int
+    :return: float
+    """
     current_task_time = 0
     if last_task > task_pos:
         current_task_time = (last_task - task_pos) / ELEVATOR_VELOCITY
@@ -22,14 +27,22 @@ class Elevator:
         self.tasks_time = 0
         self.suspending_for_floor = 2
 
-    # draw elevator
-    def draw(self, surface):
+    def draw(self, surface) -> None:
+        """
+        draws the elevator
+        :param surface: teh pygam surface to draw on it
+        :return: None
+        """
         surface.blit(self.image, self.pos)
         if self.tasks_time > 0:
             surface.blit(self.active_elevator_image, self.pos)
 
-    # suspending elevator in floor for two seconds
-    def set_suspending_in_floor(self, delta_time: float):
+    def set_suspending_in_floor(self, delta_time: float) -> None:
+        """
+        suspends the elevator in floor for two seconds
+        :param delta_time: the time between last update and current update, float
+        :return: None
+        """
         if self.suspending_for_floor == 2:
             pygame.mixer.music.load(DING_FILE_PATH)
             pygame.mixer.music.play()
@@ -39,8 +52,12 @@ class Elevator:
         else:
             self.suspending_for_floor = max(self.suspending_for_floor - delta_time, 0)
 
-    # update the elevator's y position
-    def update(self, delta_time: float):
+    def update(self, delta_time: float) -> None:
+        """
+        updates the elevator's y position
+        :param delta_time: the time between last update and current update, float
+        :return: None
+        """
         if self.tasks:
             task_y = self.tasks[0]
             elevator_x, elevator_y = self.pos
@@ -53,8 +70,11 @@ class Elevator:
                 self.set_suspending_in_floor(delta_time)
             self.tasks_time = max(self.tasks_time - delta_time, 0)
 
-    # get the elevator's last y position
-    def get_last_elevator_y(self):
+    def get_last_elevator_y(self) -> int:
+        """
+        returns the last y point that the elevator needs be there, int
+        :return: the last y point that the elevator needs be there, int
+        """
         current_elevator_y = self.pos[1]
         if self.tasks:
             last_task_y = self.tasks[len(self.tasks) - 1]
@@ -63,8 +83,12 @@ class Elevator:
             return current_elevator_y
 
 
-    # add a new floor to the tasks array
-    def add_new_task(self, task_y):
+    def add_new_task(self, task_y: int) -> None:
+        """
+        adds a new task to the tasks array
+        :param task_y: y point that the elevator needs go there, int
+        :return: None
+        """
         last_elevator_y = self.get_last_elevator_y()
         self.tasks_time += get_current_task_time(task_y, last_elevator_y) + 2
         self.tasks.append(task_y)

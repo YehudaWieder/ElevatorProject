@@ -1,10 +1,16 @@
+from typing import Any
 import pygame.mouse
 import elevator
 from globals import *
 
 
-# choose the quickest elevator
-def get_quickest_elv(building, task_pos: (int, int)):
+def get_quickest_elv(building, task_pos: (int, int)) -> tuple[Any | None, float | Any]:
+    """
+    chooses the quickest elevator
+    :param building: the building to be checked
+    :param task_pos: y point that the elevator needs go there, int
+    :return: the quickest elevator and the time to arrive to the task's y, (elevator, time) tuple
+    """
     min_time = float("inf")
     quickest_elevator = None
 
@@ -22,7 +28,6 @@ def get_quickest_elv(building, task_pos: (int, int)):
     return quickest_elevator, min_time
 
 
-# checking if button clicked and chooses elevator and then inviting him
 def is_button_clicked(building, pos: (int, int)):
     """
     checks if a button was clicked
@@ -42,8 +47,13 @@ def is_button_clicked(building, pos: (int, int)):
             quickest_elevator.add_new_task(task_y)
 
 
-# draw the reset button
-def draw_reset_button(screen, color: (int, int, int)):
+def draw_reset_button(screen, color: (int, int, int)) -> None:
+    """
+    draws the reset button
+    :param screen: teh pygam surface to draw on it
+    :param color: the button's color (int, int, int)
+    :return: None
+    """
     pygame.draw.circle(screen, GRAY_FOR_BUTTON_BORDER, RESET_BUTTON_POS, RESET_BUTTON_SIZE + 3, 0)
     pygame.draw.circle(screen, color, RESET_BUTTON_POS, RESET_BUTTON_SIZE, 0)
     reset_screen = pygame.font.SysFont("reset", FONT_SIZE, False, False)
@@ -51,8 +61,13 @@ def draw_reset_button(screen, color: (int, int, int)):
     screen.blit(reset_screen, (RESET_BUTTON_POS[0] - 24, RESET_BUTTON_POS[1] - 10))
 
 
-# activating the reset function
-def reset(building, pos: (int, int)):
+def reset(building, pos: (int, int)) -> None:
+    """
+    activates the reset function
+    :param building: the building to reset
+    :param pos: the mouse click position (x, y) tuple
+    :return: None
+    """
     x, y = pos
     bx, by = RESET_BUTTON_POS
     if ((x - bx) ** 2 + (y - by) ** 2) ** 0.5 < RESET_BUTTON_SIZE:
@@ -69,19 +84,27 @@ def reset(building, pos: (int, int)):
         return ENVIRONMENT_HEIGHT - SCREEN_HEIGHT
 
 
-# checking mouse over the reset button
-def reset_mouse_over(pos: (int, int), screen):
+def reset_mouse_over(pos: (int, int)) -> bool:
+    """
+    checks if mouse over the reset button
+    :param pos: the mouse over position (x, y) tuple
+    :return: True or False
+    """
     x, y = pos
     bx, by = RESET_BUTTON_POS
     if ((x - bx) ** 2 + (y - by) ** 2) ** 0.5 <= RESET_BUTTON_SIZE:
         return True
 
-
-# checking mouse over some floor button or reset button
-def mouse_over(building, pos: (int, int), surface):
+def mouse_over(building, pos: (int, int)) -> None:
+    """
+    checks if mouse over some floor's button or the reset button
+    :param building: the building to be checked
+    :param pos: the mouse over position (x, y) tuple
+    :return: None
+    """
     x, y = pos
     reset_button_y = y - (ENVIRONMENT_HEIGHT - SCREEN_HEIGHT)
-    reset = reset_mouse_over((x, reset_button_y), surface)
+    reset = reset_mouse_over((x, reset_button_y))
     button = None
     for floor in building.floors:
         if floor.button.is_mouse_over(pos) and floor.floor_timer == 0:

@@ -10,7 +10,6 @@ surface = pygame.Surface((ENVIRONMENT_WIDTH, ENVIRONMENT_HEIGHT))
 
 my_building = Building(NUMBER_OF_FLOORS, NUMBER_OF_ELEVATORS)
 
-clock = pygame.time.Clock()
 previous_time = pygame.time.get_ticks()
 
 scroll_speed = 20
@@ -64,7 +63,7 @@ while run:
     # check if mouse over a button
     x, y = pygame.mouse.get_pos()
     y += scroll_y
-    management.mouse_over(my_building, (x, y), surface)
+    management.mouse_over(my_building, (x, y))
 
     pygame.display.flip()
 

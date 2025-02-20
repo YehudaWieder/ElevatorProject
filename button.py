@@ -8,8 +8,13 @@ class Button:
         self.pos = (BASE_BUTTON_POS_X, BASE_BUTTON_POS_Y - (FLOOR_HEIGHT * self.floor_num))
         self.mouse_over = None
 
-    # draw button and floor number
-    def draw(self, surface, color: (int, int, int)):
+    def draw(self, surface, color: (int, int, int)) -> None:
+        """
+        draws a button with its floor number
+        :param surface: teh pygam surface to draw on it
+        :param color: the button's color (int, int, int)
+        :return: None
+        """
         pygame.draw.circle(surface, color, self.pos, BUTTON_SIZE)
         pygame.draw.circle(surface, GRAY_FOR_BUTTON_BORDER, self.pos, BUTTON_SIZE, width=2)
         floor_num = pygame.font.SysFont("floor number", FONT_SIZE, True, False)
@@ -18,16 +23,24 @@ class Button:
         floor_num_pos.center = self.pos
         surface.blit(floor_num, floor_num_pos)
 
-    # check if button clicked
-    def onclick(self, click_pos: (int, int)):
+    def onclick(self, click_pos: (int, int)) -> bool:
+        """
+        checks if the button was clicked
+        :param click_pos: the mouse click position (x, y) tuple
+        :return: True or False
+        """
         x, y = click_pos
         bx, by = self.pos
         if ((x - bx) ** 2 + (y - by) ** 2) ** 0.5 <= BUTTON_SIZE:
             return True
         return False
 
-    # check if mouse over the button
-    def is_mouse_over(self, pos: (int, int)):
+    def is_mouse_over(self, pos: (int, int)) -> bool:
+        """
+        checks if mouse over the button
+        :param pos: the mouse over position (x, y) tuple
+        :return: True or False
+        """
         over = False
         x, y = pos
         bx, by = self.pos
