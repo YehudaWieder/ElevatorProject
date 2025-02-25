@@ -3,7 +3,7 @@ import pygame
 
 # users input
 NUMBER_OF_FLOORS = 15
-NUMBER_OF_ELEVATORS = 3
+NUMBER_OF_ELEVATORS = 7
 
 # general
 ELEVATOR_VELOCITY = 160  # P/S

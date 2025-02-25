@@ -4,6 +4,7 @@ import management
 from globals import *
 
 pygame.init()
+pygame.mixer.music.load(DING_FILE_PATH)
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("elevators system")

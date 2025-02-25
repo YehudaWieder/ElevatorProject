@@ -45,7 +45,6 @@ class Elevator:
         :return: None
         """
         if self.suspending_for_floor == 2:
-            pygame.mixer.music.load(DING_FILE_PATH)
             pygame.mixer.music.play()
         if self.suspending_for_floor == 0:
             self.tasks.pop(0)
